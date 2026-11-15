@@ -3,8 +3,10 @@ import { AuthProvider } from './context/AuthContext'
 import useAuth from './context/useAuth'
 import Navbar from './components/Navbar'
 import CustomerDashboard from './pages/CustomerDashboard'
+import AdminDashboard from './pages/AdminDashboard'
 import ForgotPassword from './pages/ForgotPassword'
 import Login from './pages/Login'
+import OrderTracking from './pages/OrderTracking'
 import Register from './pages/Register'
 import ResetPassword from './pages/ResetPassword'
 import VerifyEmail from './pages/VerifyEmail'
@@ -30,7 +32,8 @@ function AppRoutes() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/dashboard" element={<ProtectedRoute><CustomerDashboard /></ProtectedRoute>} />
-        <Route path="/admin" element={<ProtectedRoute adminOnly><div className="page-shell"><h1>Admin dashboard coming in Phase 4</h1></div></ProtectedRoute>} />
+        <Route path="/orders" element={<ProtectedRoute><OrderTracking /></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
         <Route path="/" element={<Navigate to={user ? (user.role === 'admin' ? '/admin' : '/dashboard') : '/login'} replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
