@@ -31,13 +31,13 @@ PizzaCraft is a full-stack custom pizza delivery application. Customers build a 
 ### Backend
 
 1. Install Node.js and MongoDB or create a MongoDB Atlas database.
-2. From `Backend/`, install dependencies:
+2. From `WebDev-L3-T1-PizzaDelivery/Backend/`, install dependencies:
 
    ```bash
    npm install
    ```
 
-3. Create `Backend/.env` using `.env.example`:
+3. Create `WebDev-L3-T1-PizzaDelivery/Backend/.env` using `.env.example`:
 
    ```env
    PORT=3000
@@ -67,13 +67,13 @@ The backend runs on port `3000`.
 
 ### Frontend
 
-1. From `Frontend/`, install dependencies:
+1. From `WebDev-L3-T1-PizzaDelivery/Frontend/`, install dependencies:
 
    ```bash
    npm install
    ```
 
-2. Create `Frontend/.env` using `.env.example`:
+2. Create `WebDev-L3-T1-PizzaDelivery/Frontend/.env` using `.env.example`:
 
    ```env
    VITE_API_URL=http://localhost:3000
