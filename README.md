@@ -262,6 +262,4 @@ Add project screenshots to this section when available:
 | 📦 Admin live orders | `screenshots/admin-orders.png` |
 | 📊 Inventory manager | `screenshots/inventory-manager.png` |
 
-## 📄 License
 
-This project was created for the OIBSIP Web Development Level 3 Task 1 submission.
