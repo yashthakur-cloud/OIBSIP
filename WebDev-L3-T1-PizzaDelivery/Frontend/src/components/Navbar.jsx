@@ -20,14 +20,11 @@ export default function Navbar() {
             <Link className={`nav-link ${isActive('/dashboard') ? 'active' : ''}`} to="/dashboard">Build Pizza</Link>
             <Link className={`nav-link ${isActive('/orders') ? 'active' : ''}`} to="/orders">My Orders</Link>
           </>}
-          {user?.role === 'admin' && <Link className={`nav-link ${isActive('/admin') ? 'active' : ''}`} to="/admin">Admin Dashboard</Link>}
+          {user?.role === 'admin' && <Link className={`nav-link ${isActive('/admin') ? 'active' : ''}`} to="/admin">Admin Panel</Link>}
           {user ? <>
-            <div className="profile-chip">
-              <span className="avatar">{initials}</span>
-              <span><span className="profile-name">{user.name}</span><span className="role-badge">{user.role === 'admin' ? 'Admin' : 'Customer'}</span></span>
-            </div>
+            {user.role === 'admin' ? <span className="role-pill">Admin</span> : <span className="avatar">{initials}</span>}
             <button className="logout" onClick={logout}><LogOut size={14} /> Logout</button>
-          </> : <><Link className="nav-link" to="/login">Login</Link><Link className="nav-link" to="/register">Register</Link></>}
+          </> : <><Link className="nav-link nav-login" to="/login">Login</Link><Link className="primary-button nav-signup" to="/register">Sign Up</Link></>}
         </div>
       </div>
     </nav>

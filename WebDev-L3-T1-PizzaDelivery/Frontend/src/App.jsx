@@ -6,6 +6,7 @@ import CustomerDashboard from './pages/CustomerDashboard'
 import AdminDashboard from './pages/AdminDashboard'
 import ForgotPassword from './pages/ForgotPassword'
 import Login from './pages/Login'
+import LandingPage from './pages/LandingPage'
 import OrderTracking from './pages/OrderTracking'
 import Register from './pages/Register'
 import ResetPassword from './pages/ResetPassword'
@@ -20,21 +21,26 @@ function ProtectedRoute({ children, adminOnly = false }) {
   return children
 }
 
+function PublicAuthRoute({ children }) {
+  const { user } = useAuth()
+  return user ? <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace /> : children
+}
+
 function AppRoutes() {
   const { user } = useAuth()
   return (
     <>
       <Navbar />
       <Routes>
-        <Route path="/login" element={user ? <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} /> : <Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/verify-email/:token" element={<VerifyEmail />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/login" element={<PublicAuthRoute><Login /></PublicAuthRoute>} />
+        <Route path="/register" element={<PublicAuthRoute><Register /></PublicAuthRoute>} />
+        <Route path="/verify-email/:token" element={<PublicAuthRoute><VerifyEmail /></PublicAuthRoute>} />
+        <Route path="/forgot-password" element={<PublicAuthRoute><ForgotPassword /></PublicAuthRoute>} />
+        <Route path="/reset-password/:token" element={<PublicAuthRoute><ResetPassword /></PublicAuthRoute>} />
         <Route path="/dashboard" element={<ProtectedRoute><CustomerDashboard /></ProtectedRoute>} />
         <Route path="/orders" element={<ProtectedRoute><OrderTracking /></ProtectedRoute>} />
         <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
-        <Route path="/" element={<Navigate to={user ? (user.role === 'admin' ? '/admin' : '/dashboard') : '/login'} replace />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
