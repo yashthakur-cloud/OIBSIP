@@ -3,6 +3,11 @@ import { ArrowRight, ChefHat, CircleCheck, CreditCard, Flame, Leaf, MapPin, Pizz
 import { useNavigate } from 'react-router-dom'
 import api from '../api/axios'
 import useAuth from '../context/useAuth'
+import pizzaOne from '../assets/pizza1.png'
+import pizzaFour from '../assets/p4.png'
+import pizzaTwo from '../assets/p2.png'
+import pizzaFive from '../assets/p5.png'
+import pizzaThree from '../assets/p3.png'
 
 const categories = [
   { key: 'base', label: 'Pizza Bases', icon: Pizza, copy: 'Golden, crisp foundations' },
@@ -45,9 +50,29 @@ export default function LandingPage() {
           <div className="landing-trust"><span><CircleCheck size={15} /> Made to order</span><span><Truck size={15} /> Live order tracking</span></div>
         </div>
         <div className="landing-hero-art" aria-hidden="true">
-          <div className="pizza-orbit orbit-one" /><div className="pizza-orbit orbit-two" />
-          <div className="landing-pizza"><Pizza size={165} strokeWidth={1.2} /></div>
+          <div className="hero-image-frame">
+            <img src={pizzaThree} alt="" />
+            <span className="hero-fresh-badge"><Flame size={14} /> Baked fresh</span>
+          </div>
           <span className="ingredient-float ingredient-one">🍅</span><span className="ingredient-float ingredient-two">🌿</span><span className="ingredient-float ingredient-three">🧀</span>
+        </div>
+      </section>
+
+      <section className="landing-section signature-section">
+        <div className="section-heading"><span className="eyebrow">Crowd favourites</span><h2>Pizza worth gathering around</h2><p>Three delicious moods, ready to inspire your own signature creation.</p></div>
+        <div className="signature-grid">
+          <button className="signature-card" onClick={startOrder}>
+            <span className="signature-image"><img src={pizzaOne} alt="Garden vegetable pizza with mushrooms and peppers" /></span>
+            <span className="signature-copy"><span><small>Signature 01</small><strong>Garden Fire</strong></span><ArrowRight size={17} /></span>
+          </button>
+          <button className="signature-card signature-card-featured" onClick={startOrder}>
+            <span className="signature-image"><img src={pizzaTwo} alt="Freshly baked artisan pizzas with cheese and vegetables" /></span>
+            <span className="signature-copy"><span><small>House favourite</small><strong>The Crust &amp; Craft</strong></span><ArrowRight size={17} /></span>
+          </button>
+          <button className="signature-card" onClick={startOrder}>
+            <span className="signature-image"><img src={pizzaFive} alt="Vegetable pizza with fresh basil and tomato" /></span>
+            <span className="signature-copy"><span><small>Signature 03</small><strong>Pepperoni Passion</strong></span><ArrowRight size={17} /></span>
+          </button>
         </div>
       </section>
 
