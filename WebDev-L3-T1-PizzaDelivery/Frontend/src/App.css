@@ -48,6 +48,7 @@
 .field-wrap { position: relative; }
 .field-icon { position: absolute; top: 50%; left: 13px; color: #a8a29e; transform: translateY(-50%); }
 .field-wrap input { padding-left: 42px; }
+.field-wrap.login-field input { padding-left: 50px; }
 .field-wrap.password input { padding-right: 42px; }
 .password-toggle { position: absolute; top: 50%; right: 12px; border: 0; color: #78716c; background: transparent; cursor: pointer; transform: translateY(-50%); }
 .form input, .form textarea, .select-input { width: 100%; border: 1px solid #d6d3d1; border-radius: 11px; outline: 0; color: var(--ink); background: white; padding: 12px 13px; transition: .2s ease; }

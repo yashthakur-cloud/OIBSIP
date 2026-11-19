@@ -27,11 +27,17 @@ async function register(req, res) {
       verificationToken,
     });
 
-    await sendEmail({
-      to: user.email,
-      subject: 'Verify your PizzaCraft account',
-      html: `<p>Welcome to PizzaCraft, ${user.name}.</p><p><a href="${clientUrl()}/verify-email/${verificationToken}">Verify your email address</a></p>`,
-    });
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: 'Verify your PizzaCraft account',
+        html: `<p>Welcome to PizzaCraft, ${user.name}.</p><p><a href="${clientUrl()}/verify-email/${verificationToken}">Verify your email address</a></p>`,
+        text: `Welcome to PizzaCraft, ${user.name}. Verify your email: ${clientUrl()}/verify-email/${verificationToken}`,
+      });
+    } catch (error) {
+      await User.findByIdAndDelete(user._id);
+      throw error;
+    }
 
     res.status(201).json({ message: 'Registration successful. Check your email to verify your account.' });
   } catch (error) {
@@ -100,6 +106,34 @@ async function forgotPassword(req, res) {
   }
 }
 
+async function resendVerification(req, res) {
+  try {
+    if (!req.body.email) {
+      return res.status(400).json({ message: 'Email is required' });
+    }
+    const user = await User.findOne({ email: req.body.email.toLowerCase() });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    if (user.isVerified) {
+      return res.status(400).json({ message: 'Email is already verified' });
+    }
+
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    user.verificationToken = verificationToken;
+    await user.save();
+    await sendEmail({
+      to: user.email,
+      subject: 'Verify your PizzaCraft account',
+      html: `<p>Welcome to PizzaCraft, ${user.name}.</p><p><a href="${clientUrl()}/verify-email/${verificationToken}">Verify your email address</a></p>`,
+      text: `Welcome to PizzaCraft, ${user.name}. Verify your email: ${clientUrl()}/verify-email/${verificationToken}`,
+    });
+    res.json({ message: 'Verification email sent. Please check your inbox.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Could not send verification email', error: error.message });
+  }
+}
+
 async function resetPassword(req, res) {
   try {
     const user = await User.findOne({
@@ -120,4 +154,4 @@ async function resetPassword(req, res) {
   }
 }
 
-module.exports = { register, verifyEmail, login, forgotPassword, resetPassword };
+module.exports = { register, verifyEmail, login, forgotPassword, resendVerification, resetPassword };
