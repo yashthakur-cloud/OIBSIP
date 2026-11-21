@@ -52,7 +52,7 @@ export default function PizzaBuilder({ inventory }) {
       const { data: razorpayOrder } = await api.post('/orders/razorpay', { amount: total })
       const Razorpay = window.Razorpay
       if (!Razorpay) throw new Error('Razorpay checkout is unavailable')
-      new Razorpay({
+      const checkout = new Razorpay({
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: razorpayOrder.amount,
         currency: 'INR',
@@ -76,7 +76,13 @@ export default function PizzaBuilder({ inventory }) {
           setQuantity(1)
         },
         prefill: {},
-      }).open()
+      })
+      checkout.on('payment.failed', (response) => {
+        const details = response.error || {}
+        setError(details.description || details.reason || 'Razorpay could not complete the payment')
+        setPaying(false)
+      })
+      checkout.open()
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Payment could not be started')
     } finally {
