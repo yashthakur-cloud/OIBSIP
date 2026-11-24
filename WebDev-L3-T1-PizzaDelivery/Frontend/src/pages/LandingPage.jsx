@@ -85,6 +85,15 @@ export default function LandingPage() {
         </div>
       </section>
 
+      <section className="landing-section about-section" id="about">
+        <div className="section-heading"><span className="eyebrow">A little about us</span><h2>Pizza made personal</h2><p>Crust &amp; Craft brings together the joy of building your own pizza and the ease of knowing what happens next.</p></div>
+        <div className="steps-grid">
+          <article className="step-card landing-step"><ChefHat size={25} /><h3>Made for your taste</h3><p>Choose your layers and create a combination that feels like yours.</p></article>
+          <article className="step-card landing-step"><Leaf size={25} /><h3>Fresh choices</h3><p>Explore the ingredients available today and make every layer count.</p></article>
+          <article className="step-card landing-step"><MapPin size={25} /><h3>Every step in view</h3><p>Follow your order from the kitchen through its journey to your doorstep.</p></article>
+        </div>
+      </section>
+
       <section className="landing-section menu-section" id="menu">
         <div className="section-heading menu-heading"><div><span className="eyebrow">Freshly stocked today</span><h2>Meet your ingredients</h2><p>Build a combination that is unmistakably yours.</p></div><span className="menu-note">Tap an ingredient to start building</span></div>
         {error && <p className="alert error">{error}</p>}
@@ -97,7 +106,7 @@ export default function LandingPage() {
                 {(grouped[key] || []).map((item) => <button className="menu-item" key={item._id} onClick={startOrder}><span>{item.name}</span><strong>₹{item.price}</strong></button>)}
                 {!grouped[key]?.length && inventory.length > 0 && <span className="muted menu-empty">Coming fresh from the kitchen</span>}
               </div>
-              <button className="menu-cta" onClick={startOrder}>Log in to customize <ArrowRight size={14} /></button>
+              <button className="menu-cta" onClick={startOrder}>{user ? 'Customize ingredients' : 'Log in to customize'} <ArrowRight size={14} /></button>
             </article>
           ))}
         </div>
@@ -105,7 +114,7 @@ export default function LandingPage() {
 
       <footer className="landing-footer">
         <div><div className="footer-brand"><span className="brand-mark"><Pizza size={20} /></span><strong>Crust &amp; Craft</strong></div><p>Handcrafted layers. Live-tracked journeys. Your signature slice.</p></div>
-        <div className="footer-links"><a href="#menu">Explore menu</a><button onClick={startOrder}>Start an order</button></div>
+        <div className="footer-links"><a href="#about">About us</a><a href="#menu">Explore menu</a><button onClick={startOrder}>Start an order</button></div>
         <small>Admin and customer demo access available via Login.</small>
       </footer>
     </main>

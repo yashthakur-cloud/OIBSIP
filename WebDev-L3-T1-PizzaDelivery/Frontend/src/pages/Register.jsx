@@ -28,6 +28,7 @@ export default function Register() {
     <AuthShell eyebrow="Join the kitchen" title="Create your account." description="Save your pizza preferences and keep every order close at hand.">
       {message && <p className="alert success">{message}</p>}
       {error && <p className="alert error">{error}</p>}
+      {error.includes('Sign in to request a new verification email') && <p className="auth-footer"><Link className="text-link" to="/login">Go to sign in</Link> with your registered email to resend it.</p>}
       <form className="form" onSubmit={submit}>
         <label className="field">Full name<span className="field-wrap"><UserRound className="field-icon" size={17} /><input required value={form.name} onChange={(e) => update('name', e.target.value)} placeholder="Your name" /></span></label>
         <label className="field">Email<span className="field-wrap"><Mail className="field-icon" size={17} /><input type="email" required value={form.email} onChange={(e) => update('email', e.target.value)} placeholder="you@example.com" /></span></label>

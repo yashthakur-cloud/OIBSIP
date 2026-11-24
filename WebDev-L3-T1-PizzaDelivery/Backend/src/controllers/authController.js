@@ -4,7 +4,15 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const sendEmail = require('../utils/sendEmail');
 
-const clientUrl = () => process.env.CLIENT_URL || 'http://localhost:5173';
+const clientUrl = () => (process.env.CLIENT_URL || 'http://localhost:5173').replace(/\/$/, '');
+
+const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+}[character]));
 
 async function register(req, res) {
   try {
@@ -31,12 +39,14 @@ async function register(req, res) {
       await sendEmail({
         to: user.email,
         subject: 'Verify your PizzaCraft account',
-        html: `<p>Welcome to PizzaCraft, ${user.name}.</p><p><a href="${clientUrl()}/verify-email/${verificationToken}">Verify your email address</a></p>`,
+        html: `<p>Welcome to PizzaCraft, ${escapeHtml(user.name)}.</p><p><a href="${clientUrl()}/verify-email/${verificationToken}">Verify your email address</a></p>`,
         text: `Welcome to PizzaCraft, ${user.name}. Verify your email: ${clientUrl()}/verify-email/${verificationToken}`,
       });
     } catch (error) {
-      await User.findByIdAndDelete(user._id);
-      throw error;
+      // Keep the unverified account so the user can request another email from Login.
+      return res.status(503).json({
+        message: 'Your account was created, but the verification email could not be sent. Sign in to request a new verification email.',
+      });
     }
 
     res.status(201).json({ message: 'Registration successful. Check your email to verify your account.' });
@@ -119,15 +129,22 @@ async function resendVerification(req, res) {
       return res.status(400).json({ message: 'Email is already verified' });
     }
 
+    const previousVerificationToken = user.verificationToken;
     const verificationToken = crypto.randomBytes(32).toString('hex');
     user.verificationToken = verificationToken;
     await user.save();
-    await sendEmail({
-      to: user.email,
-      subject: 'Verify your PizzaCraft account',
-      html: `<p>Welcome to PizzaCraft, ${user.name}.</p><p><a href="${clientUrl()}/verify-email/${verificationToken}">Verify your email address</a></p>`,
-      text: `Welcome to PizzaCraft, ${user.name}. Verify your email: ${clientUrl()}/verify-email/${verificationToken}`,
-    });
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: 'Verify your PizzaCraft account',
+        html: `<p>Welcome to PizzaCraft, ${escapeHtml(user.name)}.</p><p><a href="${clientUrl()}/verify-email/${verificationToken}">Verify your email address</a></p>`,
+        text: `Welcome to PizzaCraft, ${user.name}. Verify your email: ${clientUrl()}/verify-email/${verificationToken}`,
+      });
+    } catch (error) {
+      user.verificationToken = previousVerificationToken;
+      await user.save();
+      return res.status(503).json({ message: 'Could not send verification email. Please try again.' });
+    }
     res.json({ message: 'Verification email sent. Please check your inbox.' });
   } catch (error) {
     res.status(500).json({ message: 'Could not send verification email', error: error.message });
