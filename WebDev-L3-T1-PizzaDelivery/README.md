@@ -1,8 +1,8 @@
-# 🍕 PizzaCraft
+# 🍕 Crust & Craft
 
 ### Custom pizza delivery, built for hungry customers and efficient kitchens
 
-PizzaCraft is a full-stack pizza delivery platform where customers create their own pizzas, pay securely with Razorpay, and follow each order in real time. Store administrators get a dedicated control room for live orders, inventory, restocking, and low-stock notifications.
+Crust & Craft is a full-stack pizza delivery platform where customers create their own pizzas, pay securely with Razorpay, and follow each order in real time. Store administrators get a dedicated control room for live orders, inventory, restocking, and low-stock notifications.
 
 > **Project:** `WebDev-L3-T1-PizzaDelivery`  
 > **Application type:** Full-stack MERN-style web application  
@@ -19,7 +19,7 @@ PizzaCraft is a full-stack pizza delivery platform where customers create their 
 | 📍 Delivery address and order summary | 🔄 Real-time order status updates |
 | 🚚 Live order tracking | ⚠️ Low-stock highlighting |
 | 🔐 Email verification and password reset | ➕ One-click +10 restocking |
-| 📱 Responsive PizzaCraft interface | 📧 Scheduled stock alert emails |
+| 📱 Responsive Crust & Craft interface | 📧 Scheduled stock alert emails |
 
 ## 🧭 How it works
 
