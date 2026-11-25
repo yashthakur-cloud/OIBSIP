@@ -57,12 +57,21 @@ async function register(req, res) {
 
 async function verifyEmail(req, res) {
   try {
+    const verificationTokenHash = crypto.createHash('sha256').update(req.params.token).digest('hex');
     const user = await User.findOne({ verificationToken: req.params.token });
     if (!user) {
+      const previouslyVerifiedUser = await User.findOne({
+        verifiedVerificationTokenHash: verificationTokenHash,
+        isVerified: true,
+      });
+      if (previouslyVerifiedUser) {
+        return res.json({ message: 'Your email is already verified. You can continue to login.' });
+      }
       return res.status(400).json({ message: 'Invalid verification token' });
     }
 
     user.isVerified = true;
+    user.verifiedVerificationTokenHash = verificationTokenHash;
     user.verificationToken = undefined;
     await user.save();
     res.json({ message: 'Email verified successfully' });

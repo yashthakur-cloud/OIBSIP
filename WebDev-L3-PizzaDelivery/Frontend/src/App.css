@@ -47,7 +47,7 @@
 .field { display: grid; gap: 7px; color: #57534e; font-size: .78rem; font-weight: 700; }
 .field-wrap { position: relative; }
 .field-icon { position: absolute; top: 50%; left: 13px; color: #a8a29e; transform: translateY(-50%); }
-.field-wrap input { padding-left: 42px; }
+.form .field-wrap input { padding-left: 42px; }
 .field-wrap.login-field input { padding-left: 50px; }
 .field-wrap.password input { padding-right: 42px; }
 .password-toggle { position: absolute; top: 50%; right: 12px; border: 0; color: #78716c; background: transparent; cursor: pointer; transform: translateY(-50%); }
