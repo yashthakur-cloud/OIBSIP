@@ -221,8 +221,8 @@ Frontend URL: `http://localhost:5173`
 The seeder creates this local development account:
 
 ```text
-Email:    admin@pizzadelivery.com
-Password: admin123
+Email:    admin@pizza*******.com
+Password: admin***
 ```
 
 Change the password before using the application outside local testing.
@@ -250,16 +250,6 @@ Get-ChildItem -Recurse -File .\src | ForEach-Object { node --check $_.FullName }
 - Use Razorpay Test Mode credentials during local development.
 - Use a Gmail App Password instead of a normal Gmail password.
 
-## 🖼️ Screenshots
 
-Add project screenshots to this section when available:
-
-| Screen | Screenshot |
-| --- | --- |
-| 🍕 Customer pizza builder | `screenshots/customer-builder.png` |
-| 💳 Razorpay checkout | `screenshots/razorpay-checkout.png` |
-| 🚚 Live order tracking | `screenshots/order-tracking.png` |
-| 📦 Admin live orders | `screenshots/admin-orders.png` |
-| 📊 Inventory manager | `screenshots/inventory-manager.png` |
 
 
