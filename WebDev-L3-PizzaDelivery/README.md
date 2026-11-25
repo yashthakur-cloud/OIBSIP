@@ -4,7 +4,7 @@
 
 Crust & Craft is a full-stack pizza delivery platform where customers create their own pizzas, pay securely with Razorpay, and follow each order in real time. Store administrators get a dedicated control room for live orders, inventory, restocking, and low-stock notifications.
 
-> **Project:** `WebDev-L3-T1-PizzaDelivery`  
+> **Project:** `WebDev-L3-PizzaDelivery`  
 > **Application type:** Full-stack MERN-style web application  
 > **Status:** ✅ Four implementation phases complete
 
@@ -49,7 +49,7 @@ Crust & Craft is a full-stack pizza delivery platform where customers create the
 ```text
 OIBSIP/
 ├── README.md
-└── WebDev-L3-T1-PizzaDelivery/
+└── WebDev-L3-PizzaDelivery/
     ├── Backend/
     │   ├── .env.example
     │   ├── package.json
@@ -165,7 +165,7 @@ OIBSIP/
 ### 1. Configure the backend
 
 ```powershell
-cd WebDev-L3-T1-PizzaDelivery\Backend
+cd WebDev-L3-PizzaDelivery\Backend
 npm install
 ```
 
@@ -197,7 +197,7 @@ Backend URL: `http://localhost:3000`
 Open a second terminal:
 
 ```powershell
-cd WebDev-L3-T1-PizzaDelivery\Frontend
+cd WebDev-L3-PizzaDelivery\Frontend
 npm install
 ```
 
@@ -229,7 +229,7 @@ Change the password before using the application outside local testing.
 
 ## 🧪 Validation
 
-Run the frontend checks from `WebDev-L3-T1-PizzaDelivery/Frontend/`:
+Run the frontend checks from `WebDev-L3-PizzaDelivery/Frontend/`:
 
 ```powershell
 npm run lint
