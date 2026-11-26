@@ -8,6 +8,13 @@ Crust & Craft is a full-stack pizza delivery platform where customers create the
 > **Application type:** Full-stack MERN-style web application  
 > **Status:** ✅ Four implementation phases complete
 
+## Project summary
+
+- **Objective:** Build a responsive pizza-ordering website where customers customize pizzas, pay online, and track delivery, while administrators manage orders and ingredient stock.
+- **Steps performed:** Built the pizza customizer and customer account flows; connected the frontend to an Express API and MongoDB; added Razorpay test checkout, live order updates, admin inventory tools, email notifications, and current-location delivery coordinates.
+- **Tools used:** React, Vite, Tailwind CSS, Node.js, Express, MongoDB, Mongoose, Socket.IO, Razorpay, Nodemailer, JWT, and bcryptjs.
+- **Outcome:** Customers can place and track customized pizza orders, and administrators can manage order status and inventory from a dashboard. Current-location coordinates open in Google Maps without requiring a Google Maps API key.
+
 ---
 
 ## ✨ Highlights
@@ -28,7 +35,7 @@ Crust & Craft is a full-stack pizza delivery platform where customers create the
 1. Register with a name, email, and password.
 2. Verify the account through the emailed verification link.
 3. Choose a **base**, **sauce**, **cheese**, and optional **vegetables**.
-4. Adjust quantity, enter a delivery address, and review the live total.
+4. Adjust quantity, enter a delivery address, or use the browser's current-location button. Selected coordinates are saved with the order and can be opened in Google Maps.
 5. Complete payment through Razorpay Test Mode.
 6. Track the order through:
    - `Order Received`
@@ -215,6 +222,8 @@ npm run dev
 ```
 
 Frontend URL: `http://localhost:5173`
+
+The current-location button requires location permission and a secure browser context. Localhost is supported for development; deployed sites must use HTTPS.
 
 ## 🔐 Demo administrator
 

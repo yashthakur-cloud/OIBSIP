@@ -56,7 +56,6 @@ export default function Login() {
         <div className="form-footer"><span /> <Link to="/forgot-password">Forgot password?</Link></div>
         <button className="primary-button" disabled={loading}>{loading ? <><span className="loading-spinner" /> Signing in...</> : 'Sign in to Crust & Craft'}</button>
       </form>
-      <div className="demo-box"><span><strong>Quick Demo Login</strong>Admin account ready to explore</span><button type="button" onClick={() => setForm({ email: 'admin@pizzadelivery.com', password: 'admin123' })}>Autofill</button></div>
       <p className="auth-footer">New to Crust &amp; Craft? <Link className="text-link" to="/register">Create an account</Link></p>
     </AuthShell>
   )

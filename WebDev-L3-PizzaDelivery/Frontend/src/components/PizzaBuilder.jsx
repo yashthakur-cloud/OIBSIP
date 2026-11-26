@@ -16,6 +16,8 @@ export default function PizzaBuilder({ inventory }) {
   const [selection, setSelection] = useState({ base: null, sauce: null, cheese: null, veggies: [] })
   const [quantity, setQuantity] = useState(1)
   const [address, setAddress] = useState('')
+  const [location, setLocation] = useState(null)
+  const [locating, setLocating] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [paying, setPaying] = useState(false)
@@ -26,6 +28,32 @@ export default function PizzaBuilder({ inventory }) {
   const selectedItems = [selection.base, selection.sauce, selection.cheese, ...selection.veggies].filter(Boolean)
   const total = selectedItems.reduce((sum, item) => sum + item.price, 0) * quantity
   const requiredComplete = ['base', 'sauce', 'cheese'].filter((key) => selection[key]).length
+
+  const useCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setError('Your browser does not support location access.')
+      return
+    }
+
+    setLocating(true)
+    setError('')
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        setLocation({ latitude: coords.latitude, longitude: coords.longitude })
+        setLocating(false)
+      },
+      (locationError) => {
+        const reasons = {
+          1: 'Allow location access in your browser and try again.',
+          2: 'Your location could not be determined. Try again or enter your address.',
+          3: 'Finding your location timed out. Try again.',
+        }
+        setError(reasons[locationError.code] || 'Could not get your location. Enter your address instead.')
+        setLocating(false)
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 },
+    )
+  }
 
   const choose = (category, item) => {
     if (item.stockCount <= 0) return
@@ -42,7 +70,7 @@ export default function PizzaBuilder({ inventory }) {
   }
 
   const pay = async () => {
-    if (!selection.base || !selection.sauce || !selection.cheese || !address.trim()) {
+    if (!selection.base || !selection.sauce || !selection.cheese || (!address.trim() && !location)) {
       setError('Choose a base, sauce, cheese, and delivery address.')
       return
     }
@@ -68,12 +96,16 @@ export default function PizzaBuilder({ inventory }) {
               veggies: selection.veggies.map((item) => item._id),
               quantity,
             }],
-            deliveryAddress: address,
+            deliveryAddress: [
+              address.trim(),
+              location && `Location coordinates: ${location.latitude.toFixed(6)}, ${location.longitude.toFixed(6)}`,
+            ].filter(Boolean).join('\n'),
             totalAmount: total,
           })
           setMessage('Payment successful! Your pizza is on its way.')
           setSelection({ base: null, sauce: null, cheese: null, veggies: [] })
           setQuantity(1)
+          setLocation(null)
         },
         prefill: {},
       })
@@ -135,7 +167,15 @@ export default function PizzaBuilder({ inventory }) {
             {selectedItems.length ? selectedItems.map((item) => <div className="summary-row" key={item._id}><span>{item.name}</span><strong>₹{item.price}</strong></div>) : <p className="muted">Select ingredients to see your receipt.</p>}
             <div className="summary-row"><span>Quantity</span><span className="quantity"><button aria-label="Decrease quantity" onClick={() => setQuantity(Math.max(1, quantity - 1))}><Minus size={13} /></button>{quantity}<button aria-label="Increase quantity" onClick={() => setQuantity(quantity + 1)}><Plus size={13} /></button></span></div>
             <label className="address-label" htmlFor="delivery-address"><MapPin size={14} /> Delivery Address</label>
-            <textarea id="delivery-address" rows="3" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Where should we deliver?" />
+            <textarea id="delivery-address" rows="3" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Street address, building, or delivery instructions" />
+            <button className="secondary-button small-button" type="button" onClick={useCurrentLocation} disabled={locating} style={{ marginTop: '9px' }}>
+              <MapPin size={14} /> {locating ? 'Finding your location...' : location ? 'Update current location' : 'Use my current location'}
+            </button>
+            {location && (
+              <p className="muted" style={{ fontSize: '.7rem', marginTop: '8px' }}>
+                Location added. <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${location.latitude},${location.longitude}`)}`} target="_blank" rel="noreferrer">View on Google Maps</a>
+              </p>
+            )}
             <div className="total"><span>Total Amount</span><strong>₹{total}</strong></div>
             {error && <p className="alert error"><CircleAlert size={15} />{error}</p>}
             {message && <p className="alert success"><ShieldCheck size={15} />{message}</p>}

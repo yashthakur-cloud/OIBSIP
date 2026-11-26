@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Bike, MapPin, Receipt, ShieldCheck } from 'lucide-react'
 import { io } from 'socket.io-client'
 import api from '../api/axios'
+import DeliveryAddress from '../components/DeliveryAddress'
 import StatusTracker from '../components/StatusTracker'
 
 const socketUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000'
@@ -42,7 +43,7 @@ export default function OrderTracking() {
             <div className="order-heading"><div><span className="order-id">ORDER #{order._id.slice(-6).toUpperCase()}</span><p className="muted" style={{ fontSize: '.72rem', marginTop: '8px' }}>{new Date(order.createdAt).toLocaleString()}</p></div><strong>₹{order.totalAmount}</strong></div>
             <StatusTracker status={order.orderStatus} />
             {order.items.map((item, index) => <div key={`${order._id}-${index}`}><div className="ingredient-tags">{ingredientTags(item).map(([label, ingredient]) => <span className="ingredient-tag" key={`${label}-${ingredient._id}`}>{label}: {ingredient.name}</span>)}</div><p className="muted" style={{ fontSize: '.72rem' }}>Quantity: {item.quantity || 1}</p></div>)}
-            <p className="detail-line"><MapPin size={16} color="#d92323" /><span><strong>Delivery to:</strong> {order.deliveryAddress}</span></p>
+            <p className="detail-line"><MapPin size={16} color="#d92323" /><span><strong>Delivery to:</strong> <DeliveryAddress value={order.deliveryAddress} /></span></p>
             <span className="payment-badge"><ShieldCheck size={14} /> Paid · Razorpay ID: {order.paymentInfo?.razorpayPaymentId || 'Unavailable'}</span>
           </article>
         ))}
